@@ -16,26 +16,41 @@ let currentPlayer = xText
 let spaces = Array(9).fill("")
 
 
-//an event listener is added to each box so the uder can click on it
+//an event listener is added to each box so the user can click on it
 const startGame = ()=> {
     boxes.forEach(box => box.addEventListener('click',boxClicked))
-}
 
+// boxClicked function targets each box by id and sets it to current player
 function boxClicked(e) {
     const id = e.target.id
     if(!spaces[id]){
         spaces[id]= currentPlayer
         e.target.innerText=currentPlayer
 
-        // if(playerWins() !==false) {
-        //     playerText = `${currentPlayer} wins!`
-        // }
+        if(playerWins() !==false) {
+            playerText = `${currentPlayer} wins!`
+        }
 
         currentPlayer=currentPlayer == xText ? oText: xText
 
 }
+function playerWins(){
+    for(const condition of winningCombos){
+        let [a,b,c] = condition
+        
+        if(spaces[a] && (spaces [a]== spaces[b] && spaces[a] == (spaces[c]))){
+            return ( [a,b,c]);
+            
+        }
+        
+    }
+return false;
+    
+}
+playerWins()
 }
 
+// winning combinations for game
 const winningCombos = [
     //horizontal by index
     [0,1,2],
@@ -44,39 +59,25 @@ const winningCombos = [
     //vertical
     [0,3,6],
     [1,4,7],
-    [2,5,8]
+    [2,5,8],
     //diagonal
     [0,4,8],
     [2,4,6]
-]
-function playerWins() {
-    winningCombos.forEach(function(combination){
-        let check = combination.every(index=>
-        boxes[index].innerText.trim()==currentPlayer)
-        if(check) {
-            alert (`${currentPlayer} wins!`)
-        }
-    })
-}
+];
 
-
-// //added event listener to restart button to allow user to click
-    // restartBtn.addEventListener('click', restart)
+//added event listener to restart button to allow user to click
+    restartBtn.addEventListener('click', restart)
         
-    // function restart () {
-    //     boxes.forEach(box=>{
-    //         box.innerText=''
-    //     })
-    //      }     
-    //      currentPlayer=xText
-    
+    function restart () {
+        boxes.forEach(box=>{
+            box.innerText=''
+            currentPlayer=xText
+            spaces=Array(9).fill('')
+        })
+         }     
+         
+        }
 
-//     
-//     let winningMessage= document.getElementById('winningMessage')
-//     let winningMessageText= document.getElementById('winningMessageText')
-
-    //Bootstrap Alert of Winner!
-// }
 startGame()
 
 
